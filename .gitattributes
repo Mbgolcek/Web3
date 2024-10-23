@@ -1,2 +1,52 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+import Array "mo:base/Array";
+import Debug "mo:base/Debug"; 
+
+actor Secim {
+    
+    private var adaylar: [Text] = [];
+    private var oylar: [Nat] = []; 
+
+    public func adayEkle(isim: Text): async () {
+        adaylar := Array.append(adaylar, [isim]);
+        
+        oylar := Array.append(oylar, [0]); 
+    };
+
+    public query func adaylariGetir(): async [Text] {
+        return adaylar;
+    };
+
+    public func oyVer(adayIndeksi: Nat): async Text {
+        let indeks = adayIndeksi - 1; 
+
+        if (indeks >= Array.size(adaylar)) {
+            return "Geçersiz aday indeksi";
+        };
+
+        var mevcutOylar: [Nat] = oylar; 
+        mevcutOylar[indeks] := mevcutOylar[indeks] + 1; 
+        oylar := mevcutOylar;
+
+        return "Başarıyla " 
+    };
+
+    public query func oySayilariGetir(): async [Nat] {
+        return oylar;
+    };
+
+
+    public query func kazananBul(): async Text {
+        var maxOy: Nat = 0; 
+        var kazananIndeksi: Nat = 0;
+        var i = null;
+        
+        for (i in 0 .. (Array.size(adaylar) - 1)) {
+            if (oylar[i] > maxOy) {
+                maxOy := oylar[i]; 
+                kazananIndeksi := i; 
+            };
+        };
+
+        return "Kazanan: " 
+    };
+}
